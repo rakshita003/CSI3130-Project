@@ -771,7 +771,6 @@ typedef struct PlanState
 	 * Other run-time state needed by most if not all node types.
 	 */
 	TupleTableSlot *ps_OuterTupleSlot;	/* slot for current "outer" tuple */
-	TupleTableSlot *ps_InnerTupleSlot;	/* slot for current "outer" tuple */
 	TupleTableSlot *ps_ResultTupleSlot; /* slot for my result tuples */
 	ExprContext *ps_ExprContext;	/* node's expression-evaluation context */
 	ProjectionInfo *ps_ProjInfo;	/* info for doing tuple projection */
@@ -1110,12 +1109,13 @@ typedef struct MergeJoinState
 typedef struct HashJoinTupleData *HashJoinTuple;
 typedef struct HashJoinTableData *HashJoinTable;
 
+// CSI 3130: Added fields to struct to support by-directional probing
 typedef struct HashJoinState
 {
 	JoinState	js;				/* its first field is NodeTag */
 	List	   *hashclauses;	/* list of ExprState nodes */
-	HashJoinTable inner_hj_HashTable;	/*GB*/
-	HashJoinTable outer_hj_HashTable;	/*GB*/
+	HashJoinTable inner_hj_HashTable;	
+	HashJoinTable outer_hj_HashTable;	
 	uint32		inner_hj_CurHashValue;
 	uint32		outer_hj_CurHashValue;
 	int			inner_hj_CurBucketNo;
@@ -1138,11 +1138,12 @@ typedef struct HashJoinState
 	bool		hj_NeedNewInner;
 	bool		hj_MatchedOuter;
 	bool		hj_OuterNotEmpty;
-/*GB*/	bool		hj_InnerNotEmpty;
+	bool		hj_InnerNotEmpty;
 	int matches_by_probing_inner;
 	int matches_by_probing_outer;
 	bool isNextFetchInner;		//false -> outer, true->inner
 } HashJoinState;
+
 
 
 /* ----------------------------------------------------------------

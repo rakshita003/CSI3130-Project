@@ -64,6 +64,7 @@ static NestLoop *create_nestloop_plan(PlannerInfo *root, NestPath *best_path,
 					 Plan *outer_plan, Plan *inner_plan);
 static MergeJoin *create_mergejoin_plan(PlannerInfo *root, MergePath *best_path,
 					  Plan *outer_plan, Plan *inner_plan);
+/* To modify? */ 
 static HashJoin *create_hashjoin_plan(PlannerInfo *root, HashPath *best_path,
 					 Plan *outer_plan, Plan *inner_plan);
 static void fix_indexqual_references(List *indexquals, IndexPath *index_path,
@@ -1450,7 +1451,6 @@ create_hashjoin_plan(PlannerInfo *root,
 	List	   *hashclauses;
 	HashJoin   *join_plan;
 	Hash	   *hash_plan;
-/*GB*/	Hash	   *outer_hash_plan;
 
 	/* Get the join qual clauses (in plain expression form) */
 	if (IS_OUTER_JOIN(best_path->jpath.jointype))
@@ -1491,15 +1491,19 @@ create_hashjoin_plan(PlannerInfo *root,
 	 * Build the hash node and hash join node.
 	 */
 	hash_plan = make_hash(inner_plan);
-/*GB*/ outer_hash_plan=make_hash(outer_plan);  	
-	
+
+	/* CSI3130: Hash the outer plan as well */
+	hash_plan_outer = make_hash(outer_plan);
+
 	join_plan = make_hashjoin(tlist,
 							  joinclauses,
 							  otherclauses,
 							  hashclauses,
-							  /*GB*/(Plan*) outer_hash_plan,
+							  (Plan *) hash_plan_outer,
 							  (Plan *) hash_plan,
 							  best_path->jpath.jointype);
+	
+	
 
 	copy_path_costsize(&join_plan->join.plan, &best_path->jpath.path);
 
