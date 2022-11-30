@@ -771,11 +771,11 @@ typedef struct PlanState
 	 * Other run-time state needed by most if not all node types.
 	 */
 	TupleTableSlot *ps_OuterTupleSlot;	/* slot for current "outer" tuple */
+	TupleTableSlot *ps_InnerTupleSlot;	/* slot for current "outer" tuple */
 	TupleTableSlot *ps_ResultTupleSlot; /* slot for my result tuples */
 	ExprContext *ps_ExprContext;	/* node's expression-evaluation context */
 	ProjectionInfo *ps_ProjInfo;	/* info for doing tuple projection */
-	bool		ps_TupFromTlist;/* state flag for processing set-valued
-								 * functions in targetlist */
+	bool		ps_TupFromTlist;/* state flag for processing set-valued */
 } PlanState;
 
 /* ----------------
