@@ -89,10 +89,10 @@ ExecHash(HashState* node)
 		econtext->ecxt_outertuple = slot;
 	}
 	*/
-	slot = ExecProcNode(outerNode); // CSI3530
+	slot = ExecProcNode(outerNode); // CSI3130
 	if (outerNode == NULL || TupIsNull(slot) || hashtable == NULL || hashkeys == NULL || econtext == NULL) // CSI3530
-		return NULL;  // CSI3530
-	econtext->ecxt_innertuple = slot; // CSI3530
+		return NULL;  // CSI3130
+	econtext->ecxt_innertuple = slot; // CSI3130
 
 	// Hash the value
 	hashvalue = ExecHashGetHashValue(hashtable, econtext, hashkeys);
@@ -853,6 +853,7 @@ ExecScanHashBucket(HashJoinState *hjstate,
 	return hashtable;
 	*/
 
+	// CSI3130:
 	List	   *hjclauses = hjstate->hashclauses;
 	HashJoinTable hashtable = hjstate->inner_hj_HashTable;
 	HashJoinTuple hashTuple = hjstate->inner_hj_CurTuple;
@@ -896,6 +897,7 @@ ExecScanHashBucket(HashJoinState *hjstate,
 		}
 
 		hashTuple = hashTuple->next;
+		// CSI3130
 	}
 	/*
 	 * no match
@@ -960,6 +962,7 @@ ExecScanHashBucket(HashJoinState *hjstate,
  *		reset hash table header for new batch
  */
 
+// CSI3130:
 HeapTuple
 ExecScanHashBucket_probeouter(HashJoinState *hjstate,
 				   ExprContext *econtext)
@@ -1014,7 +1017,9 @@ ExecScanHashBucket_probeouter(HashJoinState *hjstate,
 	 */
 	return NULL;
 }
+// CSI3130
 
+// CSI3130:
 HeapTuple
 ExecScanHashBucket_probeinner(HashJoinState *hjstate,
 				   ExprContext *econtext)
@@ -1067,6 +1072,7 @@ ExecScanHashBucket_probeinner(HashJoinState *hjstate,
 	 */
 	return NULL;
 }
+// CSI3130
 
 void
 ExecHashTableReset(HashJoinTable hashtable)
