@@ -139,7 +139,7 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 		 * outer plan node.  If we succeed, we have to stash it away for later
 		 * consumption by ExecHashJoinOuterGetTuple.
 		 */
-		 /*	CSI3130: no need for early finish as we have no blocking effect
+		 /*	
 				 if (node->js.jointype == JOIN_LEFT ||
 					 (outerNode->plan->startup_cost < hashNode->ps.plan->total_cost &&
 					  !node->hj_OuterNotEmpty))
