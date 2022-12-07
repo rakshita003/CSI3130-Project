@@ -281,7 +281,6 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 					 * but this tuple may not belong to the current batch.
 					 */
 
-					 //CSI3130: can we use only batchno 0?
 					Assert(batchno == inner_hashtable->curbatch);
 					if (false && batchno != inner_hashtable->curbatch)
 					{
