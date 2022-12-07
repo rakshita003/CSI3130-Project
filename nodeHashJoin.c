@@ -48,8 +48,8 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 {
 	EState* estate;
 	PlanState* outerNode;
-	HashState* inner_hashNode;	/*CSI3130:new*/
-	HashState* outer_hashNode; /*CSI3130:new*/
+	HashState* inner_hashNode;	/*CSI3130: new*/
+	HashState* outer_hashNode; /*CSI3130: new*/
 	List* joinqual;
 	List* otherqual;
 	TupleTableSlot* inntuple;
