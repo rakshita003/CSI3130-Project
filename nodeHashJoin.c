@@ -175,14 +175,14 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 		inner_hashNode->hashtable = inner_hashtable;
 		outer_hashNode->hashtable = outer_hashtable;
 
-		//*CSI3130		(void) MultiExecProcNode((PlanState *) hashNode);
+		//* (void) MultiExecProcNode((PlanState *) hashNode);
 
 				/*
 				 * If the inner relation is completely empty, and we're not doing an
 				 * outer join, we can quit without scanning the outer relation.
 				 */
-				 //*CSI3130		if (hashtable->totalTuples == 0 && node->js.jointype != JOIN_LEFT)
-				 //*CSI3130			return NULL;
+				 //*if (hashtable->totalTuples == 0 && node->js.jointype != JOIN_LEFT)
+				 //*	return NULL;
 
 						 /*
 						  * need to remember whether nbatch has increased since we began
@@ -195,7 +195,7 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 								   * above, because ExecHashJoinOuterGetTuple will immediately
 								   * set it again.)
 								   */
-								   //		node->hj_OuterNotEmpty = false;		//CSI3130:check
+								   //		node->hj_OuterNotEmpty = false;		
 	}
 
 	/*
@@ -224,7 +224,7 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 						//get hash value
 					ExprContext* econtext = node->js.ps.ps_ExprContext;
 					econtext->ecxt_innertuple = innerTupleSlot;
-					hashvalue = ExecHashGetHashValue(outer_hashtable, econtext,		//CSI3130: outer_hashtable?
+					hashvalue = ExecHashGetHashValue(outer_hashtable, econtext,		
 						node->hj_InnerHashKeys);
 					node->js.ps.ps_InnerTupleSlot = innerTupleSlot;
 					econtext->ecxt_innertuple = node->js.ps.ps_InnerTupleSlot;
