@@ -1138,7 +1138,8 @@ typedef struct HashJoinState
 	bool		hj_NeedNewInner;
 	bool		hj_MatchedOuter;
 	bool		hj_OuterNotEmpty;
-	/*CSI3130*/	bool		hj_InnerNotEmpty; /*Adding a boolean corresponding to inner relation, because of the bi-directionality of the symetric hash-join*/
+	/*CSI3130*/	bool		hj_InnerNotEmpty; 
+	/*We add a boolean corresponding to a non-empty inner relation, because of the bi-directionality of the symetric hash-join it cannot only be one boolean for the outer relation*/
 	int matches_by_probing_inner;
 	int matches_by_probing_outer;
 	bool isNextFetchInner;		//false -> outer, true->inner
