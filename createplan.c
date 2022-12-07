@@ -1503,7 +1503,10 @@ create_hashjoin_plan(PlannerInfo* root,
 		joinclauses,
 		otherclauses,
 		hashclauses,
-		/*CSI3130*/(Plan*)outer_hash_plan,
+		/*CSI3130*/
+		/**Added the plan for outer_hash_plan 
+		*/
+		(Plan*)outer_hash_plan,
 		(Plan*)hash_plan,
 		best_path->jpath.jointype);
 
