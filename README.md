@@ -1,4 +1,4 @@
-# CSI3130-Project Symmetric hash join
+<h1 align="center"> CSI3130-Project Symmetric hash join </h1> <br>
 
 Group Members
 - Carlota  300334659
