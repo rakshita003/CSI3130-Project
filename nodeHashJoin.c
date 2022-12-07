@@ -56,11 +56,11 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 	TupleTableSlot* outtuple;	/*CSI3130: new*/
 	ExprContext* econtext;
 	ExprDoneCond isDone;
-	HashJoinTable inner_hashtable;	//*CSI3130: called hashtable in orginal file
+	HashJoinTable inner_hashtable;	/*CSI3130: called hashtable in orginal file*/
 	HashJoinTable outer_hashtable;  /*CSI3130: new*/
 	HeapTuple	curtuple;
 	TupleTableSlot* outerTupleSlot;
-	TupleTableSlot* innerTupleSlot;	/*CSI3130:new*/
+	TupleTableSlot* innerTupleSlot;	/*CSI3130:new*/ /*CSI3130: all these previous changes are made in order to support symmetric hash join*/
 	uint32		hashvalue;
 	int			batchno;
 
