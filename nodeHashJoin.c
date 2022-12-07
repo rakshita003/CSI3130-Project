@@ -188,7 +188,7 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 						  * need to remember whether nbatch has increased since we began
 						  * scanning the outer relation
 						  */
-						  //		hashtable->nbatch_outstart = hashtable->nbatch;  //CSI3130: check
+						  //		hashtable->nbatch_outstart = hashtable->nbatch;  
 
 								  /*
 								   * Reset OuterNotEmpty for scan.  (It's OK if we fetched a tuple
