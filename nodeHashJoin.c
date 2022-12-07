@@ -258,9 +258,7 @@ ExecHashJoin(HashJoinState* node)		/*CSI3130: altered*/
 					node->hj_OuterNotEmpty = true;
 					ExprContext* econtext = node->js.ps.ps_ExprContext;
 					econtext->ecxt_outertuple = outerTupleSlot;
-					hashvalue = ExecHashGetHashValue(inner_hashtable, econtext,				//CSI3130: inner_hashtable?
-						node->hj_OuterHashKeys);
-
+					hashvalue = ExecHashGetHashValue(inner_hashtable, econtext, node->hj_OuterHashKeys);
 
 					node->js.ps.ps_OuterTupleSlot = outerTupleSlot;
 					econtext->ecxt_outertuple = outerTupleSlot;
