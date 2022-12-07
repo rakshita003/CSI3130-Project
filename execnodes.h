@@ -1114,8 +1114,8 @@ typedef struct HashJoinState
 {
 	JoinState	js;				/* its first field is NodeTag */
 	List* hashclauses;	/* list of ExprState nodes */
-	HashJoinTable inner_hj_HashTable;	/*CSI3130*/ /*Modifying inner and outer hash-join HashTable, by replicating the existing structures to support bi-directional probing*/
-	HashJoinTable outer_hj_HashTable;	/*CSI3130*/ 
+	HashJoinTable inner_hj_HashTable;	/*CSI3130*/ /*Modifying inner hash join HasTable by replicating the existing structures to support bi-directional probing*/
+	HashJoinTable outer_hj_HashTable;	/*CSI3130*/ /*Same thing here for the outer join HashTable*/
 	uint32		inner_hj_CurHashValue;
 	uint32		outer_hj_CurHashValue;
 	int			inner_hj_CurBucketNo;
