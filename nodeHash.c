@@ -75,6 +75,7 @@ MultiExecHash(HashState* node)
 	hashkeys = node->hashkeys;
 	econtext = node->ps.ps_ExprContext;
 
+	//  CSI 3130
 	/*
 	 * get all inner tuples and insert into the hash table (or temp files)
 	 */
@@ -84,8 +85,8 @@ MultiExecHash(HashState* node)
 		if (TupIsNull(slot))
 			break;
 		hashtable->totalTuples += 1;
-		/* We have to compute the hash value */
 		econtext->ecxt_innertuple = slot;
+		// CSI 3130: Compute hash value
 		hashvalue = ExecHashGetHashValue(hashtable, econtext, hashkeys);
 		ExecHashTableInsert(hashtable, ExecFetchSlotTuple(slot), hashvalue);
 	}
@@ -309,7 +310,7 @@ ExecHashTableCreate(Hash* node, List* hashOperators)
 	hashtable->nbatch_original = nbatch;
 	hashtable->nbatch_outstart = nbatch;
 	hashtable->growEnabled = false;
-	//hashtable->growEnabled = true;
+	//hashtable->growEnabled = true; // CSI 3130: Disable use of multiple batches
 	hashtable->totalTuples = 0;
 	hashtable->innerBatchFile = NULL;
 	hashtable->outerBatchFile = NULL;
@@ -812,6 +813,9 @@ ExecHashGetBucketAndBatch(HashJoinTable hashtable,
  * The current outer tuple must be stored in econtext->ecxt_outertuple.
  */
 
+ // CSI 3130: Implemented both probing inner and probing outer in ExecScanHashBucket rather than as two seperate methods.
+ // Method returns the HeapTuple assigned to the curtuple in nodeHashJoin
+ // This prevents server from crashing when checking for repeated tuples in nodeHashJoin 
 HeapTuple
 ExecScanHashBucket(HashJoinState* hjstate,
 	ExprContext* econtext) {
@@ -827,11 +831,12 @@ ExecScanHashBucket(HashJoinState* hjstate,
 // 	HashJoinTuple hashTuple = hjstate->inner_hj_CurTuple;
 // 	uint32		hashvalue = hjstate->outer_hj_CurHashValue;
 
-	// probing inner
+	// CSI3130: probing inner
 	//if (hjstate->probing_inner) { //CSI3130
 	List* hjclauses = hjstate->hashclauses;
 
-	if ((hjstate->isNextFetchInner)) { //CSI3130
+	if ((hjstate->isNextFetchInner)) { //CSI3130 - check if the next fetch is inner
+		// CSI 3130: Set hashtable. hashTuple, and hashvalue
 		HashJoinTable hashtable = hjstate->inner_hj_HashTable;
 		HashJoinTuple hashTuple = hjstate->inner_hj_CurTuple;
 		uint32 hashvalue = hjstate->outer_hj_CurHashValue;
@@ -839,7 +844,8 @@ ExecScanHashBucket(HashJoinState* hjstate,
 		//tupleSlot = hjstate->hj_InnerTupleSlot
 
 				/*
-		* hj_CurTuple is NULL to start scanning a new bucket, or the address of
+		* CSI3130: Scanning inner bucket
+		 hj_CurTuple is NULL to start scanning a new bucket, or the address of
 		* the last tuple returned from the current bucket.
 		*/
 		if (hashTuple == NULL)
@@ -847,6 +853,7 @@ ExecScanHashBucket(HashJoinState* hjstate,
 		else
 			hashTuple = hashTuple->next;
 
+		// CSI3130: While the next hashTuple isn't null 
 		while (hashTuple != NULL)
 		{
 			if (hashTuple->hashvalue == hashvalue)
@@ -881,7 +888,7 @@ ExecScanHashBucket(HashJoinState* hjstate,
 		 */
 		return NULL;
 
-		// probing outer
+		// CSI 3130: probing outer
 	}
 	else {
 		HashJoinTable hashtable = hjstate->outer_hj_HashTable;
@@ -890,7 +897,7 @@ ExecScanHashBucket(HashJoinState* hjstate,
 		//bucketNo = hjstate->outer_hj_CurBucketNo;
 		//tupleSlot = hjstate->hj_OuterupleSlot
 
-
+		// CSI3130: Scanning outer bucket
 		/*
 	 * hj_CurTuple is NULL to start scanning a new bucket, or the address of
 	 * the last tuple returned from the current bucket.

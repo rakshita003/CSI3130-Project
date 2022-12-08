@@ -1,3 +1,4 @@
+#pragma once
 /*-------------------------------------------------------------------------
  *
  * execnodes.h
@@ -771,7 +772,7 @@ typedef struct PlanState
 	 * Other run-time state needed by most if not all node types.
 	 */
 	TupleTableSlot* ps_OuterTupleSlot;	/* slot for current "outer" tuple */
-	TupleTableSlot* ps_InnerTupleSlot;	/* slot for current "outer" tuple */
+	TupleTableSlot* ps_InnerTupleSlot;	/* CSI3130: slot for current "inner" tuple */
 	TupleTableSlot* ps_ResultTupleSlot; /* slot for my result tuples */
 	ExprContext* ps_ExprContext;	/* node's expression-evaluation context */
 	ProjectionInfo* ps_ProjInfo;	/* info for doing tuple projection */
@@ -1110,6 +1111,7 @@ typedef struct MergeJoinState
 typedef struct HashJoinTupleData* HashJoinTuple;
 typedef struct HashJoinTableData* HashJoinTable;
 
+// CSI 3130: Added fields to struct to support by-directional probing
 typedef struct HashJoinState
 {
 	JoinState	js;				/* its first field is NodeTag */
@@ -1138,8 +1140,8 @@ typedef struct HashJoinState
 	bool		hj_NeedNewInner;
 	bool		hj_MatchedOuter;
 	bool		hj_OuterNotEmpty;
-	/*CSI3130*/	bool		hj_InnerNotEmpty; 
-	/*We add a boolean corresponding to a non-empty inner relation, because of the bi-directionality of the symetric hash-join it cannot only 
+	/*CSI3130*/	bool		hj_InnerNotEmpty;
+	/*We add a boolean corresponding to a non-empty inner relation, because of the bi-directionality of the symetric hash-join it cannot only
 	be one boolean to test the non-emptiness of the outer relation*/
 	int matches_by_probing_inner;
 	int matches_by_probing_outer;

@@ -1451,7 +1451,7 @@ create_hashjoin_plan(PlannerInfo* root,
 	HashJoin* join_plan;
 	Hash* hash_plan;
 	/*CSI3130*/
-	/** We added the outer hash plan to createplan.c execute the symmertic hash join for the outer tuple.
+	/** We added the outer hash plan to createplan.c execute the symmertic hash join which requires hashing and probing of outer relation as well.
 	*/
 	Hash* outer_hash_plan;
 
@@ -1494,8 +1494,8 @@ create_hashjoin_plan(PlannerInfo* root,
 	 * Build the hash node and hash join node.
 	 */
 	hash_plan = make_hash(inner_plan);
-	/*CSI3130*/ 
-	/** As for the inner_plan we build the hash node and the has join for the outer_plan as well
+	/*CSI3130*/
+	/** As for the inner_plan, we need to build the hash node and the hash join for the outer_plan as well
 	*/
 	outer_hash_plan = make_hash(outer_plan);
 
@@ -1504,7 +1504,7 @@ create_hashjoin_plan(PlannerInfo* root,
 		otherclauses,
 		hashclauses,
 		/*CSI3130*/
-		/**Added the plan for outer_hash_plan 
+		/**Added the plan for outer_hash_plan
 		*/
 		(Plan*)outer_hash_plan,
 		(Plan*)hash_plan,

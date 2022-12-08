@@ -6,6 +6,8 @@ Group Members
 - Rakshita 300215340
 - Rayan    300336355
 
+GitHub repository: https://github.com/rakshita003/CSI3130-Project.git 
+
 This archive contains 5 main-files of the project files for the course CSI 3130, that is, this file (Readme.Txt),createplan.c, execnodes.h, nodeHash.c, and nodeHashjoin.c in which the changes were made to incorporate the symmetric hash join algorithm over any other.
 
 <h1 align="center"> Problems Faced </h1> <br>
